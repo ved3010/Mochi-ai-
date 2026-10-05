@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comnyang License</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="license-shell">
+    <section class="license-panel">
+      <img class="brand-mark" src="../assets/svg/comnyang-logo.svg" alt="" aria-hidden="true">
+      <div class="language-row" aria-label="Language" data-i18n-aria-label="language">
+        <button class="language-option" type="button" data-language="en">EN</button>
+        <button class="language-option" type="button" data-language="ko">KO</button>
+        <button class="language-option" type="button" data-language="ja">JA</button>
+      </div>
+      <h1>Comnyang</h1>
+      <p class="intro" data-i18n="intro">Enter the license key you received from Lemon Squeezy.</p>
+
+      <form id="license-form">
+        <label for="license-key" data-i18n="licenseKey">License key</label>
+        <input id="license-key" name="license-key" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+        <button id="activate-button" type="submit" data-i18n="activate">Activate</button>
+      </form>
+
+      <button id="adopt-button" class="secondary-button" type="button" data-i18n="adopt">Adopt Comnyang to start</button>
+
+      <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+      <button id="reset-license-button" class="reset-license-button" type="button" data-i18n="resetLicense" hidden>Reset license</button>
+      <p id="support-message" class="support-message">
+        <span data-i18n="supportPrefix">Need help?</span>
+        <a href="mailto:info@projact.kr">info@projact.kr</a>
+      </p>
+    </section>
+  </main>
+  <script src="license.js"></script>
+</body>
+</html>
