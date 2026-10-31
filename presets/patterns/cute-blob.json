@@ -1,0 +1,18 @@
+{
+  "baseColor": "#80D8FF",
+  "eyeColor": "#111119",
+  "eyeBgColor": "#FFFFFF",
+  "eyePupilScale": 115,
+  "oddEye": false,
+  "eyeColorLeft": "#111119",
+  "eyeColorRight": "#111119",
+  "head": [],
+  "body": [],
+  "tail": [],
+  "legFl": [],
+  "legFr": [],
+  "legRl": [],
+  "legRr": [],
+  "earL": [],
+  "earR": []
+}
