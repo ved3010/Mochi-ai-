@@ -1,235 +1,161 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style><![CDATA[
-      :root {
-        --cat-color: #8ce5ff;
-        --cat-outline: #FFFFFF;
-      }
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+<style>
+  :root {
+    --cat-color: #1A1A1A;
+    --eye-color: var(--cat-color);
+    --eye-color-left: var(--eye-color);
+    --eye-color-right: var(--eye-color);
+  }
+  @keyframes speed-line-a {
+    0% { opacity: 0; transform: translateY(-2px); }
+    20%, 65% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(5px); }
+  }
+  @keyframes speed-line-b {
+    0% { opacity: 0; transform: translateY(1px); }
+    20%, 70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(7px); }
+  }
+  .speed-a {
+    opacity: 0;
+  }
+  .speed-b {
+    opacity: 0;
+  }
+  :root.scroll-detail-pulse .speed-a {
+    animation: speed-line-a 0.42s steps(3, end) 1;
+  }
+  :root.scroll-detail-pulse .speed-b {
+    animation: speed-line-b 0.42s steps(3, end) 1;
+    animation-delay: 0.24s;
+  }
+  @keyframes scroll-ear-left {
+    0%, 100% { transform: rotate(-2deg) translateY(0); }
+    50% { transform: rotate(5deg) translateY(-1px); }
+  }
+  @keyframes scroll-ear-right {
+    0%, 100% { transform: rotate(2deg) translateY(0); }
+    50% { transform: rotate(-5deg) translateY(-1px); }
+  }
+  @keyframes scroll-tail-sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(7deg) translateY(-1px); }
+  }
+  .scroll-ear-left {
+    transform-origin: 25px 13px;
+    transform: rotate(-2deg) translateY(0);
+  }
+  .scroll-ear-right {
+    transform-origin: 36px 13px;
+    transform: rotate(2deg) translateY(0);
+  }
+  .scroll-tail-sway {
+    transform-origin: 37px 39px;
+    transform: rotate(-5deg);
+  }
+  :root.scroll-detail-pulse .scroll-ear-left {
+    animation: scroll-ear-left 0.28s steps(2, end) 1;
+  }
+  :root.scroll-detail-pulse .scroll-ear-right {
+    animation: scroll-ear-right 0.28s steps(2, end) 1;
+  }
+  :root.scroll-detail-pulse .scroll-tail-sway {
+    animation: scroll-tail-sway 0.36s steps(2, end) 1;
+  }
+</style>
+<defs>
+  <clipPath id="body-clip">
+    <path d="M23 36V26H24V25H26V24H27V22H35V23H36V24H38V26H39V30H40V34H41V40H40V41H34V42H28V41H23V40H22V36H23Z"/>
+  </clipPath>
+  <clipPath id="head-clip">
+    <path d="M24 10H22V12H21V14H20V19H21V23H23V24H24V25H26V26H36V25H38V24H39V23H40V22H41V19H42V15H41V12H40V11H39V10H37V9H35V8H27V9H24V10Z"/>
+  </clipPath>
+  <clipPath id="leg-rl-clip">
+    <path d="M22 42V38H30V42H29V44H28V46H24V44H23V42H22Z"/>
+  </clipPath>
+  <clipPath id="leg-rr-clip">
+    <path d="M34 42V38H42V42H41V44H40V46H36V44H35V42H34Z"/>
+  </clipPath>
+  <clipPath id="leg-fl-clip">
+    <path d="M28 36L28 26L29 26V25L32 25V26L33 26L33 38.5H32V42H31V43H30V44H26L26 40H27L27 36H28Z"/>
+  </clipPath>
+  <clipPath id="leg-fr-clip">
+    <path d="M29 37L29 27L30 27V26L33 26V27L34 27L34 39.5H33V43H32V44H31V45H27L27 41H28L28 37H29Z"/>
+  </clipPath>
+  <clipPath id="paper-strip-clip">
+    <rect id="paper-strip-mask" x="5" y="13" width="11" height="17"/>
+  </clipPath>
+  <filter id="cat-outline" x="-20%" y="-20%" width="140%" height="140%">
+    <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="dilated"/>
+    <feFlood flood-color="var(--cat-outline, #FFFFFF)" result="flood"/>
+    <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
+    <feMerge>
+      <feMergeNode in="outline"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
 
-      /* Joyful Somersault and Squishy Jelly Roll */
-      .spin-roll {
-        transform-origin: 25px 23px;
-        animation: blob-somersault 0.52s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
-      }
-      @keyframes blob-somersault {
-        0% {
-          transform: translateY(0px) rotate(0deg) scale(1, 1);
-        }
-        25% {
-          transform: translateY(-4.5px) rotate(90deg) scale(0.92, 1.08);
-        }
-        50% {
-          transform: translateY(-7px) rotate(180deg) scale(1.06, 0.94);
-        }
-        75% {
-          transform: translateY(-4.5px) rotate(270deg) scale(0.94, 1.06);
-        }
-        100% {
-          transform: translateY(0px) rotate(360deg) scale(1, 1);
-        }
-      }
+<path d="M13 13H3V14H2V15H1V22H2V23H3V24H4V25H13V24H14V22H15V21H16V17H15V15H14V14H13V13Z" fill="#D9D9D9" stroke="black"/>
+<path d="M8 22H7V23H6V25" stroke="black"/>
+<path id="paper-strip" class="paper-strip" d="M13 13H5V15H6V16H7V17H8V45.5H16V17H15V15H14V14H13V13Z" fill="#D9D9D9" stroke="black" clip-path="url(#paper-strip-clip)"/>
 
-      :root.scroll-detail-pulse .spin-roll {
-        animation-duration: 0.38s;
-      }
-
-      /* Orbiting Magic Star Dust Trail */
-      .trail-star-1 {
-        transform-origin: 25px 23px;
-        animation: star-orbit 0.52s infinite linear;
-      }
-      .trail-star-2 {
-        transform-origin: 25px 23px;
-        animation: star-orbit 0.52s infinite linear;
-        animation-delay: -0.17s;
-      }
-      .trail-star-3 {
-        transform-origin: 25px 23px;
-        animation: star-orbit 0.52s infinite linear;
-        animation-delay: -0.35s;
-      }
-      @keyframes star-orbit {
-        0% {
-          transform: rotate(0deg) translate(22px) rotate(0deg) scale(0.7);
-          opacity: 0.2;
-        }
-        50% {
-          transform: rotate(180deg) translate(25px) rotate(-180deg) scale(1.2);
-          opacity: 1;
-        }
-        100% {
-          transform: rotate(360deg) translate(22px) rotate(-360deg) scale(0.7);
-          opacity: 0.2;
-        }
-      }
-
-      /* Wind and speed swirl lines */
-      .speed-ring {
-        transform-origin: 25px 23px;
-        animation: speed-spin 0.45s infinite linear;
-      }
-      @keyframes speed-spin {
-        0% { transform: rotate(0deg) scale(0.9); opacity: 0.3; }
-        50% { transform: rotate(180deg) scale(1.1); opacity: 0.85; }
-        100% { transform: rotate(360deg) scale(0.9); opacity: 0.3; }
-      }
-
-      /* Arm flapping in joy */
-      .roll-arm-l {
-        transform-origin: 15px 22px;
-        animation: arm-roll-l 0.52s infinite ease-in-out;
-      }
-      .roll-arm-r {
-        transform-origin: 35px 22px;
-        animation: arm-roll-r 0.52s infinite ease-in-out;
-      }
-      @keyframes arm-roll-l {
-        0%, 100% { transform: rotate(0deg); }
-        50% { transform: rotate(-15deg); }
-      }
-      @keyframes arm-roll-r {
-        0%, 100% { transform: rotate(0deg); }
-        50% { transform: rotate(15deg); }
-      }
-    ]]></style>
-
-    <!-- Blob Body Gradients -->
-    <linearGradient id="blob-body-grad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8ce5ff" />
-      <stop offset="35%" stop-color="#a4ddfe" />
-      <stop offset="62%" stop-color="#b6befe" />
-      <stop offset="85%" stop-color="#caa5fe" />
-      <stop offset="100%" stop-color="#d4acfe" />
-    </linearGradient>
-
-    <!-- Round 3D Top Dome Glow -->
-    <radialGradient id="blob-top-glow" cx="50%" cy="28%" r="58%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45" />
-      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.10" />
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Back Skirt Tentacles -->
-    <linearGradient id="blob-back-skirt" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7c58c2" />
-      <stop offset="100%" stop-color="#8d68d4" />
-    </linearGradient>
-
-    <!-- Arms -->
-    <linearGradient id="blob-arm-l" x1="0.2" y1="0" x2="0.8" y2="1">
-      <stop offset="0%" stop-color="#a8eaff" />
-      <stop offset="50%" stop-color="#c1b6fe" />
-      <stop offset="100%" stop-color="#caa3fe" />
-    </linearGradient>
-    <linearGradient id="blob-arm-r" x1="0.8" y1="0" x2="0.2" y2="1">
-      <stop offset="0%" stop-color="#a8eaff" />
-      <stop offset="50%" stop-color="#c1b6fe" />
-      <stop offset="100%" stop-color="#caa3fe" />
-    </linearGradient>
-
-    <!-- Soft blush filter -->
-    <filter id="blush-soft" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="0.8"/>
-    </filter>
-
-    <!-- Zero Black Border Filter: Soft purple drop shadow + white rim -->
-    <filter id="cat-outline" x="-25%" y="-25%" width="150%" height="150%">
-      <feDropShadow dx="0" dy="1.4" stdDeviation="1.6" flood-color="#6b46b8" flood-opacity="0.32"/>
-      <feMorphology operator="dilate" radius="0.5" in="SourceAlpha" result="dilated"/>
-      <feFlood flood-color="#ffffff" flood-opacity="0.85" result="flood"/>
-      <feComposite in="flood" in2="dilated" operator="in" result="whiteRim"/>
-      <feMerge>
-        <feMergeNode in="whiteRim"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-
-  <!-- Speed Swirl Arc Ring -->
-  <g class="speed-ring" stroke="#8ce5ff" stroke-width="1.2" stroke-linecap="round" fill="none">
-    <path d="M 25 3 A 20 20 0 0 1 43 17" opacity="0.75"/>
-    <path d="M 25 43 A 20 20 0 0 1 7 29" opacity="0.6"/>
-  </g>
-
-  <!-- Orbiting Magic Stars -->
-  <g class="trail-star-1">
-    <path d="M 0 -2.5 Q 0.6 -0.6 2.5 0 Q 0.6 0.6 0 2.5 Q -0.6 0.6 -2.5 0 Q -0.6 -0.6 0 -2.5 Z" fill="#8ce5ff"/>
-  </g>
-  <g class="trail-star-2">
-    <path d="M 0 -2.2 Q 0.5 -0.5 2.2 0 Q 0.5 0.5 0 2.2 Q -0.5 0.5 -2.2 0 Q -0.5 -0.5 0 -2.2 Z" fill="#caa5fe"/>
-  </g>
-  <g class="trail-star-3">
-    <path d="M 0 -2.0 Q 0.4 -0.4 2.0 0 Q 0.4 0.4 0 2.0 Q -0.4 0.4 -2.0 0 Q -0.4 -0.4 0 -2.0 Z" fill="#ffffff"/>
-  </g>
-
-  <!-- Joyful Rolling Blob Creature -->
-  <g id="cat-content" filter="url(#cat-outline)">
-    <g class="spin-roll">
-
-      <!-- Back Skirt -->
-      <g fill="url(#blob-back-skirt)">
-        <path d="M 14 29 C 14 34.5, 19 34.5, 19.5 30
-                 C 19.5 35, 24.5 35, 25 30
-                 C 25 35, 30 35, 30.5 30
-                 C 30.5 34.5, 35.5 34.5, 36 29 Z" />
-      </g>
-
-      <!-- Main Plump Round Body Dome (Center: x=25, y=23) -->
-      <g id="body">
-        <path fill="url(#blob-body-grad)" d="
-          M 10 16
-          C 10 7.7, 16.7 1, 25 1
-          C 33.3 1, 40 7.7, 40 16
-          C 40 21.5, 39.5 26.0, 35.5 32.0
-          C 33.5 32.0, 32.5 29.5, 30.5 29.5
-          C 28.5 29.5, 27.5 32.5, 25.0 32.5
-          C 22.5 32.5, 21.5 29.5, 19.5 29.5
-          C 17.5 29.5, 16.5 32.0, 14.5 32.0
-          C 10.5 26.0, 10 21.5, 10 16 Z" />
-
-        <!-- 3D Top Dome Highlight Glow -->
-        <path fill="url(#blob-top-glow)" d="
-          M 11.5 16
-          C 11.5 8.8, 17.5 2.5, 25 2.5
-          C 32.5 2.5, 38.5 8.8, 38.5 16
-          C 35 13.5, 30 12, 25 12
-          C 20 12, 15 13.5, 11.5 16 Z" />
-      </g>
-
-      <!-- Joyful Arms Flapping Up in the Air -->
-      <g class="roll-arm-l">
-        <path fill="url(#blob-arm-l)" d="
-          M 11 19
-          C 8 18, 5 21, 6.5 24
-          C 7.5 26, 10.5 26.5, 12.5 24.5
-          C 13.5 23, 13 20, 11 19 Z"/>
-        <ellipse cx="8.8" cy="22" rx="1.2" ry="1.8" fill="#ffffff" opacity="0.28" transform="rotate(-25 8.8 22)"/>
-      </g>
-      <g class="roll-arm-r">
-        <path fill="url(#blob-arm-r)" d="
-          M 39 19
-          C 42 18, 45 21, 43.5 24
-          C 42.5 26, 39.5 26.5, 37.5 24.5
-          C 36.5 23, 37 20, 39 19 Z"/>
-        <ellipse cx="41.2" cy="22" rx="1.2" ry="1.8" fill="#ffffff" opacity="0.28" transform="rotate(25 41.2 22)"/>
-      </g>
-
-      <!-- Head and Adorable Face (Joyful Somersault Expression) -->
-      <g id="head">
-        <!-- Bright Rosy Blushing Cheeks -->
-        <ellipse cx="14.5" cy="18.5" rx="3.0" ry="2.0" fill="#ff7da8" opacity="0.82" filter="url(#blush-soft)"/>
-        <ellipse cx="35.5" cy="18.5" rx="3.0" ry="2.0" fill="#ff7da8" opacity="0.82" filter="url(#blush-soft)"/>
-
-        <!-- Overjoyed Squinty Eyes -->
-        <path d="M 16.5 13.5 L 20.5 16.0 L 16.5 18.5" stroke="#111119" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M 33.5 13.5 L 29.5 16.0 L 33.5 18.5" stroke="#111119" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-
-        <!-- Thrilled Happy Open Mouth with Sweet Pink Tongue -->
-        <path d="M 21.5 20.0 Q 25.0 25.8 28.5 20.0 Z" fill="#111119"/>
-        <ellipse cx="25.0" cy="22.2" rx="2.2" ry="1.6" fill="#ff648f" opacity="0.95"/>
-      </g>
-
-    </g>
-  </g>
+<g id="cat-content" filter="url(#cat-outline)">
+<g id="tail" class="scroll-tail-sway" data-patch-frame="36 31 1 1"></g>
+<g id="leg-fl" data-patch-frame="26 25 0.875 1.727">
+<g class="paw-a">
+  <animateTransform attributeName="transform" type="rotate" values="84 33 26; 66 33 26; 84 33 26" dur="0.28s" repeatCount="indefinite"/>
+  <path d="M28 36L28 26L29 26V25L32 25V26L33 26L33 38.5H32V42H31V43H30V44H26L26 40H27L27 36H28Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#leg-fl-clip)"></g>
+</g>
+</g>
+<g id="leg-rl" data-patch-frame="22 38 1 1">
+  <path d="M22 42V38H30V42H29V44H28V46H24V44H23V42H22Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#leg-rl-clip)"></g>
+</g>
+<g id="leg-rr" data-patch-frame="34 38 1 1">
+  <path d="M34 42V38H42V42H41V44H40V46H36V44H35V42H34Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#leg-rr-clip)"></g>
+</g>
+<g id="body" data-patch-frame="22 22 0.864 1.333">
+  <path d="M23 36V26H24V25H26V24H27V22H35V23H36V24H38V26H39V30H40V34H41V40H40V41H34V42H28V41H23V40H22V36H23Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#body-clip)"></g>
+</g>
+<g id="leg-fr" data-patch-frame="27 26 0.875 1.727">
+<g class="paw-b">
+  <animateTransform attributeName="transform" type="rotate" values="66 34 27; 84 34 27; 66 34 27" dur="0.28s" repeatCount="indefinite"/>
+  <path d="M29 37L29 27L30 27V26L33 26V27L34 27L34 39.5H33V43H32V44H31V45H27L27 41H28L28 37H29Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#leg-fr-clip)"></g>
+</g>
+</g>
+<g id="head" data-patch-frame="20 8 1 1">
+  <path d="M24 10H22V12H21V14H20V19H21V23H23V24H24V25H26V26H36V25H38V24H39V23H40V22H41V19H42V15H41V12H40V11H39V10H37V9H35V8H27V9H24V10Z" fill="var(--cat-color)"/>
+  <g class="patches" clip-path="url(#head-clip)"></g>
+</g>
+<g id="whiskers" data-heat-overlay="true">
+  <rect width="6" height="1" transform="translate(17 18)" fill="var(--cat-color)"/>
+  <rect width="6" height="1" transform="translate(38 19)" fill="var(--cat-color)"/>
+  <rect width="6" height="1" transform="translate(18 20)" fill="var(--cat-color)"/>
+  <rect width="6" height="1" transform="translate(39 21)" fill="var(--cat-color)"/>
+</g>
+<g id="ear-left" class="scroll-ear-left" data-ear-position="22 5"></g>
+<g id="ear-right" class="scroll-ear-right" data-ear-position="34 5"></g>
+<rect width="1" height="3" transform="translate(31 16)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect width="1" height="3" transform="translate(35 16)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect width="3" height="5" transform="translate(32 15)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect class="pupil-right" width="3" height="3" transform="translate(32 16)" fill="var(--eye-color-right, var(--eye-color, var(--cat-color)))"/>
+<rect width="1" height="3" transform="translate(22 16)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect width="1" height="3" transform="translate(26 16)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect width="3" height="5" transform="translate(23 15)" fill="var(--eye-bg-color, #FFFFFF)"/>
+<rect class="pupil-left" width="3" height="3" transform="translate(23 16)" fill="var(--eye-color-left, var(--eye-color, var(--cat-color)))"/>
+</g>
+<path d="M4 20V18H5V20H4Z" stroke="black"/>
+<g class="speed-a">
+  <path d="M5 29V34.5" stroke="black"/>
+  <path d="M18 34V38" stroke="black"/>
+</g>
+<g class="speed-b">
+  <path d="M11.5 24V28" stroke="black"/>
+  <path d="M14 38V42" stroke="black"/>
+</g>
 </svg>
