@@ -1629,17 +1629,23 @@ body[data-press] #purr-hearts,
 body[data-scroll] #purr-hearts,
 body[data-jump] #purr-hearts { display: none; }
 
-/* Drag stretch mode — keep the cute blob visible and swinging sweetly! */
-body.dragging #press-left,
-body.dragging #press-right,
-body.dragging #scroll-unroll,
-body.dragging #jump-start,
-body.dragging #jump-ing,
-body.dragging #stretch-pose-default,
-body.dragging #stretch-pose-ing,
-body.dragging #stretch-svg-end { display: none !important; }
+/* Heat steam particles: only for Mochi */
+body:not([data-companion="mochi"]) #heat-steam,
+body[data-companion="cat"] #heat-steam {
+  display: none !important;
+}
 
-body.dragging #cat {
+/* Drag mode: Mochi (Cute Blob) Jelly Stretch */
+body[data-companion="mochi"].dragging #press-left,
+body[data-companion="mochi"].dragging #press-right,
+body[data-companion="mochi"].dragging #scroll-unroll,
+body[data-companion="mochi"].dragging #jump-start,
+body[data-companion="mochi"].dragging #jump-ing,
+body[data-companion="mochi"].dragging #stretch-pose-default,
+body[data-companion="mochi"].dragging #stretch-pose-ing,
+body[data-companion="mochi"].dragging #stretch-svg-end { display: none !important; }
+
+body[data-companion="mochi"].dragging #cat {
   display: block !important;
   transform-origin: 50% 8%;
   transform: translateX(-50%) translateY(-4px) scale(var(--stretch-sx, 0.88), var(--stretch-sy, 1.25)) rotate(var(--drag-tilt, 0deg));
@@ -1647,10 +1653,34 @@ body.dragging #cat {
   transition: transform 0.05s ease-out;
 }
 
-body.drag-released #cat {
+body[data-companion="mochi"].drag-released #cat {
   display: block !important;
   transform-origin: 50% 8%;
   animation: jelly-snap-back 0.5s cubic-bezier(0.25, 1.4, 0.5, 1) forwards;
+}
+
+/* Drag mode: Cat (Kittu) Classic Scruff Drag */
+body:not([data-companion="mochi"]).dragging #cat,
+body[data-companion="cat"].dragging #cat {
+  display: none !important;
+}
+
+body:not([data-companion="mochi"]).dragging #stretch-pose-default,
+body[data-companion="cat"].dragging #stretch-pose-default {
+  display: block !important;
+  transform: translateX(-50%) rotate(var(--drag-tilt, 0deg));
+}
+
+body:not([data-companion="mochi"]).drag-released #stretch-pose-default,
+body[data-companion="cat"].drag-released #stretch-pose-default {
+  display: none !important;
+}
+
+body:not([data-companion="mochi"]).drag-released #cat,
+body[data-companion="cat"].drag-released #cat {
+  display: block !important;
+  transform: translateX(-50%) translateY(0);
+  animation: none !important;
 }
 
 @keyframes jelly-snap-back {
