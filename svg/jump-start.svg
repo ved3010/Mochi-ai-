@@ -1,61 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="40" height="62" viewBox="0 0 40 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <clipPath id="head-clip"><path d="M13 18H11V20H10V22H9V27H10V31H12V32H13V33H15V34H25V33H27V32H28V31H29V30H30V27H31V23H30V20H29V19H28V18H26V17H24V16H16V17H13V18Z"/></clipPath>
-  <clipPath id="body-clip"><path d="M13 32H27V34H28V44H29V50H30V55H10V50H11V44H12V34H13V32Z"/></clipPath>
-  <clipPath id="leg-rl-clip"><path d="M10 56V52H18V56H17V58H16V60H12V58H11V56H10Z"/></clipPath>
-  <clipPath id="leg-rr-clip"><path d="M22 56V52H30V56H29V58H28V60H24V58H23V56H22Z"/></clipPath>
-  <clipPath id="leg-fl-clip"><path d="M12 48H11L11 38H12L12 37L13 37V36L16 36L16 48H15V49H12L12 48Z"/></clipPath>
-  <clipPath id="leg-fr-clip"><path d="M28 48H29L29 38H28V37L27 37V36L24 36L24 48H25V49H28V48Z"/></clipPath>
-  <filter id="cat-outline" x="-20%" y="-20%" width="140%" height="140%">
-    <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="dilated"/>
-    <feFlood flood-color="var(--cat-outline, #FFFFFF)" result="flood"/>
-    <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
-    <feMerge><feMergeNode in="outline"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
-</defs>
-<g id="cat-content" filter="url(#cat-outline)">
-<g id="tail" data-patch-frame="26 43 1 1"></g>
-<g id="leg-fl" data-patch-frame="11 36 0.625 1.182">
-  <animateTransform attributeName="transform" type="rotate" values="8 16 37; 8 16 37" dur="1s" repeatCount="indefinite"/>
-  <path d="M12 48H11L11 38H12L12 37L13 37V36L16 36L16 48H15V49H12L12 48Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#leg-fl-clip)"></g>
-</g>
-<g id="leg-fr" data-patch-frame="24 36 0.625 1.182">
-  <animateTransform attributeName="transform" type="rotate" values="-8 24 37; -8 24 37" dur="1s" repeatCount="indefinite"/>
-  <path d="M28 48H29L29 38H28V37L27 37V36L24 36L24 48H25V49H28V48Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#leg-fr-clip)"></g>
-</g>
-<g id="body" data-patch-frame="10 32 0.909 1.667">
-  <path d="M13 32H27V34H28V44H29V50H30V55H10V50H11V44H12V34H13V32Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#body-clip)"></g>
-</g>
-<g id="head" data-patch-frame="9 16 1 1">
-  <path d="M13 18H11V20H10V22H9V27H10V31H12V32H13V33H15V34H25V33H27V32H28V31H29V30H30V27H31V23H30V20H29V19H28V18H26V17H24V16H16V17H13V18Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#head-clip)"></g>
-</g>
-<g id="whiskers" data-heat-overlay="true">
-  <rect width="5" height="1.02083" transform="translate(6 24)" fill="var(--cat-color)"/>
-  <rect width="5" height="1.02083" transform="translate(29 24)" fill="var(--cat-color)"/>
-  <rect width="6" height="1.02083" transform="translate(5 27)" fill="var(--cat-color)"/>
-  <rect width="6" height="1.02083" transform="translate(29 27)" fill="var(--cat-color)"/>
-</g>
-<g id="ear-left" data-ear-position="11 12"></g>
-<g id="ear-right" data-ear-position="24 12"></g>
-<rect width="1" height="3.0625" transform="translate(22 23.0205)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect width="1" height="3.0625" transform="translate(26 23.0205)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect width="3" height="5.10417" transform="translate(23 22)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect class="pupil-right" width="3" height="3.0625" transform="translate(23 23.0205)" fill="var(--eye-color-right, var(--eye-color, var(--cat-color)))"/>
-<rect width="1" height="3.0625" transform="translate(13 23.0205)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect width="1" height="3.0625" transform="translate(17 23.0205)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect width="3" height="5.10417" transform="translate(14 22)" fill="var(--eye-bg-color, #FFFFFF)"/>
-<rect class="pupil-left" width="3" height="3.0625" transform="translate(14 23.0205)" fill="var(--eye-color-left, var(--eye-color, var(--cat-color)))"/>
-<g id="leg-rl" data-patch-frame="10 52 1 1">
-  <path d="M10 56V52H18V56H17V58H16V60H12V58H11V56H10Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#leg-rl-clip)"></g>
-</g>
-<g id="leg-rr" data-patch-frame="22 52 1 1">
-  <path d="M22 56V52H30V56H29V58H28V60H24V58H23V56H22Z" fill="var(--cat-color)"/>
-  <g class="patches" clip-path="url(#leg-rr-clip)"></g>
-</g>
-</g>
+  <defs>
+    <style>
+      :root {
+        --cat-color: #8ce5ff;
+        --cat-outline: #FFFFFF;
+      }
+    </style>
+
+    <linearGradient id="blob-body-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8ce5ff" />
+      <stop offset="35%" stop-color="#a4ddfe" />
+      <stop offset="62%" stop-color="#b6befe" />
+      <stop offset="85%" stop-color="#caa5fe" />
+      <stop offset="100%" stop-color="#d4acfe" />
+    </linearGradient>
+
+    <radialGradient id="blob-top-glow" cx="42%" cy="25%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="blob-back-skirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c58c2" />
+      <stop offset="100%" stop-color="#8d68d4" />
+    </linearGradient>
+
+    <linearGradient id="blob-arm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a8eaff" />
+      <stop offset="100%" stop-color="#caa3fe" />
+    </linearGradient>
+
+    <filter id="blush-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.8"/>
+    </filter>
+
+    <!-- Zero Black Border Filter -->
+    <filter id="cat-outline" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="1.4" stdDeviation="1.6" flood-color="#6b46b8" flood-opacity="0.32"/>
+      <feMorphology operator="dilate" radius="0.5" in="SourceAlpha" result="dilated"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.85" result="flood"/>
+      <feComposite in="flood" in2="dilated" operator="in" result="whiteRim"/>
+      <feMerge>
+        <feMergeNode in="whiteRim"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g id="cat-content" filter="url(#cat-outline)">
+    <!-- Squash effect: wide and flat, gathering bouncy power -->
+    <g fill="url(#blob-back-skirt)">
+      <path d="M 4 48 C 4 53, 10 53.5, 11 49 C 11 53.5, 17 54, 18 49 C 18 54, 24 54, 25 49 C 25 53.5, 31 53.5, 32 49 C 32 53, 37 52, 37 48 Z"/>
+    </g>
+
+    <!-- Squashed Chubby Dome Body -->
+    <path fill="url(#blob-body-grad)" d="
+      M 2 45
+      C 1.5 35, 6.0 22.0, 12.0 19.5
+      C 15.0 18.2, 25.0 18.2, 28.0 19.5
+      C 34.0 22.0, 38.5 35, 38.0 45
+      C 37.8 48.5, 36.0 51.5, 33.5 51.5
+      C 31.0 51.5, 29.8 48.8, 27.5 48.8
+      C 25.2 48.8, 24.0 52.0, 20.0 52.0
+      C 16.0 52.0, 14.8 48.8, 12.5 48.8
+      C 10.2 48.8, 9.0 51.5, 6.5 51.5
+      C 4.0 51.5, 2.2 48.5, 2 45 Z"/>
+
+    <!-- Braced Chubby Arms on the ground -->
+    <path fill="url(#blob-arm)" d="M 4 40 C 1 41, -1 44.5, 0.5 48 C 1.8 50.5, 5 50.5, 7.5 48 C 8.8 46, 7.5 41, 4 40 Z"/>
+    <path fill="url(#blob-arm)" d="M 36 40 C 39 41, 41 44.5, 39.5 48 C 38.2 50.5, 35 50.5, 32.5 48 C 31.2 46, 32.5 41, 36 40 Z"/>
+
+    <!-- Blush Cheeks -->
+    <ellipse cx="7.5" cy="36" rx="3.5" ry="2.2" fill="#ff7da8" opacity="0.75" filter="url(#blush-soft)"/>
+    <ellipse cx="32.5" cy="36" rx="3.5" ry="2.2" fill="#ff7da8" opacity="0.75" filter="url(#blush-soft)"/>
+
+    <!-- Squinting Determined Eyes > < -->
+    <path d="M 11.5 31.5 L 16.5 34.5 L 11.5 37.5" stroke="#111119" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 28.5 31.5 L 23.5 34.5 L 28.5 37.5" stroke="#111119" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Determined cute mouth -->
+    <ellipse cx="20.0" cy="38.5" rx="1.8" ry="1.5" fill="#111119"/>
+  </g>
 </svg>

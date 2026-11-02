@@ -6,6 +6,16 @@
     <b>Built with Electron • Google Gemini 2.0 / 1.5 Pro • Groq Whisper • Google Classroom API • Google Calendar API • Gmail API</b>
   </p>
   <p>
+    <a href="https://ved3010.github.io/Mochi-ai-/">
+      <img src="https://img.shields.io/badge/▶_Live_Demo-Try_Mochi_in_Browser-ff69b4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo" />
+    </a>
+    <a href="https://github.com/ved3010/Mochi-ai-">
+      <img src="https://img.shields.io/badge/GitHub-Repository-8A2BE2?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repo" />
+    </a>
+    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
+  </p>
+  <p>
+    <a href="https://ved3010.github.io/Mochi-ai-/"><b>🚀 Try the Live Interactive Web Simulator</b></a> •
     <a href="#-features">Features</a> •
     <a href="#-architecture">Architecture</a> •
     <a href="#-getting-started">Getting Started</a> •
@@ -14,6 +24,14 @@
     <a href="#-fast-commands">Voice & Commands</a>
   </p>
 </div>
+
+---
+
+> [!TIP]
+> **Experience Mochi Instantly in Your Browser!**  
+> Don't want to install desktop packages yet? Open the zero-install web simulator:  
+> 🔗 **[https://ved3010.github.io/Mochi-ai-/](https://ved3010.github.io/Mochi-ai-/)**  
+> Supports squish-and-stretch dragging, interactive chat, character toggle between **🫧 Mochi** and **🐱 Kittu**, custom sound effects, and task priority planning!
 
 ---
 

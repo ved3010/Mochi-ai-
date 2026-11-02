@@ -157,12 +157,13 @@
       66%  { transform: translate(0.3px, 0.3px); }
     }
   </style>
-  <filter id="cat-outline" x="-20%" y="-20%" width="140%" height="140%">
-    <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="dilated"/>
-    <feFlood flood-color="var(--cat-outline)" result="flood"/>
-    <feComposite in="flood" in2="dilated" operator="in" result="outline"/>
+  <filter id="cat-outline" x="-25%" y="-25%" width="150%" height="150%">
+    <feDropShadow dx="0" dy="1.4" stdDeviation="1.6" flood-color="#6b46b8" flood-opacity="0.32"/>
+    <feMorphology operator="dilate" radius="0.5" in="SourceAlpha" result="dilated"/>
+    <feFlood flood-color="#ffffff" flood-opacity="0.85" result="flood"/>
+    <feComposite in="flood" in2="dilated" operator="in" result="whiteRim"/>
     <feMerge>
-      <feMergeNode in="outline"/>
+      <feMergeNode in="whiteRim"/>
       <feMergeNode in="SourceGraphic"/>
     </feMerge>
   </filter>

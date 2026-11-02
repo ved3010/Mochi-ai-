@@ -4,13 +4,13 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const launcher = require("../app-launcher");
 
-test("AppLauncher: detects Brave executable path", () => {
+test("AppLauncher: detects Brave executable path", { skip: process.platform !== "win32" }, () => {
   const bravePath = launcher.getBravePath();
   assert.ok(bravePath, "Brave path should be detected");
   assert.match(bravePath.toLowerCase(), /brave\.exe/);
 });
 
-test("AppLauncher: finds installed YouTube App (PWA)", () => {
+test("AppLauncher: finds installed YouTube App (PWA)", { skip: process.platform !== "win32" }, () => {
   const app = launcher.findInstalledApp("youtube");
   assert.ok(app, "YouTube app shortcut should be found");
   assert.equal(app.name, "youtube");
@@ -22,7 +22,7 @@ test("AppLauncher: returns null for uninstalled app (unstop)", () => {
   assert.equal(app, null);
 });
 
-test("AppLauncher: handles 'open youtube' (mode: app)", async () => {
+test("AppLauncher: handles 'open youtube' (mode: app)", { skip: process.platform !== "win32" }, async () => {
   // Mock electronShell so it doesn't actually launch a window during unit test
   const mockShell = {
     openPath: async (p) => "",
