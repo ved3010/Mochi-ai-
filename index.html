@@ -744,10 +744,49 @@
       const t = Date.now();
       svgObj.data = `${folder}/cat-idle-follow-v2.svg?t=${t}`;
       playSqueakOrMeow();
+      if (isM) {
+        scheduleWebMochiExpr();
+      } else {
+        if (exprTimer) clearTimeout(exprTimer);
+        setWebMochiExpr(null);
+      }
     }
 
     btnMochi.addEventListener("click", () => setCompanion("mochi"));
     btnCat.addEventListener("click", () => setCompanion("cat"));
+
+    // Expression Cycler for Mochi
+    const CUTE_EXPRESSIONS = ["expr-happy", "expr-wink", "expr-stars", "expr-sleepy", "expr-shy", "expr-love"];
+    let exprTimer = null;
+    function setWebMochiExpr(expr) {
+      if (currentCompanion !== "mochi") return;
+      const doc = svgObj.contentDocument;
+      if (!doc || !doc.documentElement) return;
+      for (const e of CUTE_EXPRESSIONS) doc.documentElement.classList.remove(e);
+      if (expr && CUTE_EXPRESSIONS.includes(expr)) {
+        doc.documentElement.classList.add(expr);
+      }
+    }
+    function scheduleWebMochiExpr() {
+      if (exprTimer) clearTimeout(exprTimer);
+      if (currentCompanion !== "mochi") {
+        setWebMochiExpr(null);
+        return;
+      }
+      exprTimer = setTimeout(() => {
+        if (currentCompanion !== "mochi") return;
+        const chosen = CUTE_EXPRESSIONS[Math.floor(Math.random() * CUTE_EXPRESSIONS.length)];
+        setWebMochiExpr(chosen);
+        setTimeout(() => {
+          setWebMochiExpr(null);
+          scheduleWebMochiExpr();
+        }, 2200 + Math.random() * 1400);
+      }, 5000 + Math.random() * 4000);
+    }
+    svgObj.addEventListener("load", () => {
+      if (currentCompanion === "mochi") scheduleWebMochiExpr();
+    });
+    scheduleWebMochiExpr();
 
     // Tasks Management
     let tasks = [
@@ -951,3 +990,4 @@ What I can do for you:
   </script>
 </body>
 </html>
+
