@@ -20,7 +20,7 @@
           transform: translateY(0px) scale(1, 1);
         }
         50% {
-          transform: translateY(-2.2px) scale(1.03, 0.97);
+          transform: translateY(-2.4px) scale(1.035, 0.965);
         }
       }
 
@@ -45,22 +45,43 @@
       }
       @keyframes arm-paddle-l {
         0%, 100% { transform: rotate(0deg); }
-        50% { transform: rotate(-6deg) translateY(-0.8px); }
+        50% { transform: rotate(-7deg) translateY(-0.9px); }
       }
       @keyframes arm-paddle-r {
         0%, 100% { transform: rotate(0deg); }
-        50% { transform: rotate(6deg) translateY(-0.8px); }
+        50% { transform: rotate(7deg) translateY(-0.9px); }
       }
 
-      /* Inquisitive cute face micro-sway */
+      /* Inquisitive cute head tilt & face sway */
       .face-sway {
         transform-origin: 17px 18px;
-        animation: face-sway-anim 4.6s infinite ease-in-out;
+        animation: face-sway-anim 4.4s infinite ease-in-out;
       }
       @keyframes face-sway-anim {
-        0%, 100% { transform: rotate(0deg); }
-        30% { transform: rotate(-2.2deg) translateY(-0.3px); }
-        70% { transform: rotate(2.2deg) translateY(-0.3px); }
+        0%, 100% {
+          transform: rotate(0deg) translateY(0);
+        }
+        25% {
+          transform: rotate(-3.5deg) translateY(-0.6px) translateX(-0.4px);
+        }
+        50% {
+          transform: rotate(0deg) translateY(0.2px);
+        }
+        75% {
+          transform: rotate(3.5deg) translateY(-0.6px) translateX(0.4px);
+        }
+      }
+
+      /* Eyebrow curious lifters */
+      .eyebrow-group {
+        transform-origin: 17px 10px;
+        animation: eyebrow-curious 4.4s infinite ease-in-out;
+      }
+      @keyframes eyebrow-curious {
+        0%, 100% { transform: translateY(0) scaleY(1); }
+        25% { transform: translateY(-1.0px) scaleY(1.15) rotate(-1.5deg); }
+        50% { transform: translateY(0.2px) scaleY(0.95); }
+        75% { transform: translateY(-1.0px) scaleY(1.15) rotate(1.5deg); }
       }
 
       /* Cheek blush breathing glow */
@@ -70,20 +91,53 @@
       }
       @keyframes blush-glow {
         0%, 100% { opacity: 0.75; transform: scale(1); }
-        50% { opacity: 1.0; transform: scale(1.12); }
+        50% { opacity: 1.0; transform: scale(1.14); }
       }
 
-      /* Mouth singing breath pulse */
+      /* Floating cheek micro-hearts */
+      .cheek-heart-l {
+        transform-origin: 5px 16px;
+        animation: heart-float-l 3.6s infinite ease-in-out;
+      }
+      .cheek-heart-r {
+        transform-origin: 29px 16px;
+        animation: heart-float-r 3.6s infinite ease-in-out;
+        animation-delay: -1.8s;
+      }
+      @keyframes heart-float-l {
+        0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(-15deg); }
+        25% { opacity: 0.85; transform: translate(-1.2px, -2.5px) scale(1) rotate(-8deg); }
+        65% { opacity: 0.55; transform: translate(-2.2px, -5.2px) scale(0.85) rotate(-20deg); }
+        100% { opacity: 0; transform: translate(-3.0px, -7.5px) scale(0.4) rotate(-25deg); }
+      }
+      @keyframes heart-float-r {
+        0% { opacity: 0; transform: translate(0, 0) scale(0.3) rotate(15deg); }
+        25% { opacity: 0.85; transform: translate(1.2px, -2.5px) scale(1) rotate(8deg); }
+        65% { opacity: 0.55; transform: translate(2.2px, -5.2px) scale(0.85) rotate(20deg); }
+        100% { opacity: 0; transform: translate(3.0px, -7.5px) scale(0.4) rotate(25deg); }
+      }
+
+      /* Mouth humming & nibbling pulse */
       .idle-mouth {
         transform-origin: 17px 20px;
-        animation: mouth-sing 2.8s infinite ease-in-out;
+        animation: mouth-humming 3.4s infinite ease-in-out;
       }
-      @keyframes mouth-sing {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.14, 1.08); }
+      @keyframes mouth-humming {
+        0%, 100% {
+          transform: scale(1, 1);
+        }
+        25% {
+          transform: scale(1.15, 0.92) translateY(0.25px);
+        }
+        50% {
+          transform: scale(0.92, 1.15) translateY(-0.25px);
+        }
+        75% {
+          transform: scale(1.10, 0.95) translateY(0.2px);
+        }
       }
 
-      /* Eye star twinkle */
+      /* Eye star twinkle & shimmer */
       .eye-twinkle {
         transform-origin: 13.8px 14.3px;
         animation: star-twinkle 2.4s infinite ease-in-out;
@@ -94,8 +148,36 @@
         animation-delay: -1.2s;
       }
       @keyframes star-twinkle {
-        0%, 100% { opacity: 0.25; transform: scale(0.65) rotate(0deg); }
-        50% { opacity: 1.0; transform: scale(1.3) rotate(45deg); }
+        0%, 100% { opacity: 0.35; transform: scale(0.7) rotate(0deg); }
+        50% { opacity: 1.0; transform: scale(1.35) rotate(45deg); }
+      }
+
+      /* Bouncy Star Ahoge Antenna on Top of Head */
+      .head-star-ahoge {
+        transform-origin: 17.0px 1.2px;
+        animation: star-ahoge-sway 3.2s infinite ease-in-out;
+      }
+      @keyframes star-ahoge-sway {
+        0%, 100% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(-10deg) scale(1.06, 0.94);
+        }
+        50% {
+          transform: rotate(3deg) scale(0.96, 1.04);
+        }
+        75% {
+          transform: rotate(9deg) scale(1.04, 0.96);
+        }
+      }
+      .star-tip {
+        transform-origin: 17.6px -5.8px;
+        animation: star-tip-spin 4.8s infinite ease-in-out;
+      }
+      @keyframes star-tip-spin {
+        0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 1px #ffd54f); }
+        50% { transform: scale(1.22) rotate(45deg); filter: drop-shadow(0 0 3px #ffb300); }
       }
 
       /* Floating magic dust sparkles beside blob */
@@ -107,27 +189,45 @@
         transform-origin: 33px 9px;
         animation: sparkle-float-2 2.6s infinite ease-in-out;
       }
+      .sparkle-3 {
+        transform-origin: -3px 20px;
+        animation: sparkle-float-3 3.8s infinite ease-in-out;
+      }
       @keyframes sparkle-float-1 {
         0%, 100% { transform: translateY(0px) rotate(0deg) scale(0.8); opacity: 0.35; }
-        50% { transform: translateY(-3.5px) rotate(45deg) scale(1.2); opacity: 0.95; }
+        50% { transform: translateY(-3.5px) rotate(45deg) scale(1.25); opacity: 0.95; }
       }
       @keyframes sparkle-float-2 {
         0%, 100% { transform: translateY(0px) rotate(0deg) scale(0.7); opacity: 0.3; }
-        50% { transform: translateY(-3.0px) rotate(-35deg) scale(1.15); opacity: 0.9; }
+        50% { transform: translateY(-3.0px) rotate(-35deg) scale(1.2); opacity: 0.9; }
+      }
+      @keyframes sparkle-float-3 {
+        0%, 100% { transform: translateY(0px) rotate(0deg) scale(0.6); opacity: 0.2; }
+        50% { transform: translateY(-4.0px) rotate(30deg) scale(1.1); opacity: 0.85; }
       }
 
-      /* Blinking */
+      /* Cute Double-Blink with flutter */
       .eye-l-blink {
         transform-origin: 11.4px 15.6px;
-        animation: blink 3.8s infinite;
+        animation: cute-double-blink 4.6s infinite;
       }
       .eye-r-blink {
         transform-origin: 22.4px 15.6px;
-        animation: blink 3.8s infinite;
+        animation: cute-double-blink 4.6s infinite;
       }
-      @keyframes blink {
-        0%, 95%, 100% { transform: scaleY(1); }
-        97.5% { transform: scaleY(0.08); }
+      @keyframes cute-double-blink {
+        0%, 88%, 93%, 100% {
+          transform: scaleY(1);
+        }
+        90.5% {
+          transform: scaleY(0.06);
+        }
+        92% {
+          transform: scaleY(0.92);
+        }
+        94.5% {
+          transform: scaleY(0.06);
+        }
       }
 
       .pupil-left, .pupil-right {
@@ -245,11 +345,16 @@
         transform-origin: 17px 20px;
         transform: scale(1.18, 1.30);
       }
+      :root.dragging .head-star-ahoge {
+        animation: none;
+        transform: rotate(18deg) scale(0.9, 1.15);
+      }
 
       /* ==================== DYNAMIC CUTE EXPRESSIONS ==================== */
       .expr-wink-l,
       .expr-stars-eyes,
       .expr-sleepy-eyes,
+      .expr-love-eyes,
       .mouth-cat-w {
         display: none;
       }
@@ -269,8 +374,8 @@
         display: block;
       }
       :root.expr-happy .blush-pulse {
-        transform: scale(1.28);
-        opacity: 0.95;
+        transform: scale(1.30);
+        opacity: 1;
       }
 
       /* 2. Playful Wink (^_-) */
@@ -290,8 +395,8 @@
         display: block;
       }
       :root.expr-wink .blush-pulse {
-        transform: scale(1.2);
-        opacity: 0.9;
+        transform: scale(1.22);
+        opacity: 0.95;
       }
 
       /* 3. Star-Eyed Awe (✧ ∇ ✧) */
@@ -313,7 +418,7 @@
         opacity: 1;
       }
 
-      /* 4. Sleepy Drowsy (´ ꒳ `) */
+      /* 4. Sleepy Cozy Droopy Eyes (´ ꒳ `) */
       :root.expr-sleepy .eye-l-blink,
       :root.expr-sleepy .eye-r-blink {
         opacity: 0;
@@ -328,8 +433,8 @@
         display: block;
       }
       :root.expr-sleepy .blush-pulse {
-        transform: scale(1.1);
-        opacity: 0.8;
+        transform: scale(1.12);
+        opacity: 0.85;
       }
 
       /* 5. Shy Blush Smile (• ⩊ •) */
@@ -340,8 +445,35 @@
         display: block;
       }
       :root.expr-shy .blush-pulse {
-        transform: scale(1.35);
+        transform: scale(1.38);
         opacity: 1;
+      }
+
+      /* 6. Heart-Eyes / Pure Love (♥ ∇ ♥) */
+      :root.expr-love .eye-l-blink,
+      :root.expr-love .eye-r-blink {
+        opacity: 0;
+      }
+      :root.expr-love .expr-love-eyes {
+        display: block;
+      }
+      :root.expr-love .idle-mouth {
+        display: none;
+      }
+      :root.expr-love .purr-mouth {
+        display: block;
+      }
+      :root.expr-love .blush-pulse {
+        transform: scale(1.42);
+        opacity: 1;
+      }
+      .heart-pulse-l, .heart-pulse-r {
+        transform-origin: center;
+        animation: heart-beat-anim 1.1s infinite ease-in-out;
+      }
+      @keyframes heart-beat-anim {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.22); }
       }
 
       #body-js, #face-js, #eyes-js {
@@ -396,6 +528,12 @@
       <stop offset="100%" stop-color="#caa3fe" />
     </linearGradient>
 
+    <linearGradient id="star-ahoge-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff59d" />
+      <stop offset="50%" stop-color="#ffd54f" />
+      <stop offset="100%" stop-color="#ffb300" />
+    </linearGradient>
+
     <radialGradient id="pupil-gloss-l" cx="38%" cy="28%" r="62%">
       <stop offset="0%" stop-color="#FFFFFF" />
       <stop offset="28%" stop-color="#FFFFFF" />
@@ -433,6 +571,7 @@
   <g class="float-sparkles">
     <path class="sparkle-1" d="M 1 6 Q 1.8 7.5 3 7.5 Q 1.8 7.5 1 9 Q 1 7.5 -0.2 7.5 Q 1 7.5 1 6 Z" fill="#8ce5ff" />
     <path class="sparkle-2" d="M 33 8 Q 33.6 9 34.5 9 Q 33.6 9 33 10 Q 33 9 32.1 9 Q 33 9 33 8 Z" fill="#caa5fe" />
+    <path class="sparkle-3" d="M -2 19 Q -1.3 20 -0.5 20 Q -1.3 20 -2 21 Q -2 20 -2.8 20 Q -2 20 -2 19 Z" fill="#ffd54f" />
   </g>
 
   <g id="body-js" filter="url(#cat-outline)">
@@ -498,24 +637,57 @@
         <ellipse cx="31.2" cy="24.5" rx="1.5" ry="2.2" fill="#ffffff" opacity="0.28" transform="rotate(15 31.2 24.5)" />
       </g>
 
+      <!-- Adorable Bouncy Star Ahoge Antenna on Top of Head -->
+      <g class="head-star-ahoge">
+        <!-- Spring curled antenna stem -->
+        <path d="M 17.0 1.2 C 17.0 -1.5, 19.5 -3.5, 17.6 -5.6" fill="none" stroke="#a29bfe" stroke-width="0.9" stroke-linecap="round"/>
+        <!-- Glowing Golden Star at the tip -->
+        <path class="star-tip" d="M 17.6 -7.5 Q 18.1 -6.3 19.2 -5.8 Q 18.1 -5.3 17.6 -4.1 Q 17.1 -5.3 16.0 -5.8 Q 17.1 -6.3 17.6 -7.5 Z" fill="url(#star-ahoge-grad)" stroke="#f39c12" stroke-width="0.3"/>
+        <circle cx="17.6" cy="-5.8" r="0.6" fill="#ffffff" opacity="0.9"/>
+      </g>
+
       <g id="head"></g>
 
       <!-- ===== FACE GROUP ===== -->
       <g id="face-js">
         <g class="face-sway">
-          <!-- Pink Blush Cheeks with Breathing Pulse -->
-          <g class="blush-pulse">
-            <ellipse cx="6.5" cy="18.5" rx="3.0" ry="2.0" fill="#ff7da8" opacity="0.75" filter="url(#blush-soft)"/>
-            <ellipse cx="27.5" cy="18.5" rx="3.0" ry="2.0" fill="#ff7da8" opacity="0.75" filter="url(#blush-soft)"/>
+
+          <!-- Eyebrows with curious wonder float -->
+          <g class="eyebrow-group">
+            <path d="M 9.2 10.2 Q 11.4 8.8 13.6 10.2" fill="none" stroke="#483d8b" stroke-width="1.1" stroke-linecap="round"/>
+            <path d="M 20.4 10.2 Q 22.6 8.8 24.8 10.2" fill="none" stroke="#483d8b" stroke-width="1.1" stroke-linecap="round"/>
           </g>
+
+          <!-- Pink Blush Cheeks with Breathing Pulse & Anime Blush Dashes -->
+          <g class="blush-pulse">
+            <ellipse cx="6.5" cy="18.5" rx="3.2" ry="2.2" fill="#ff7da8" opacity="0.78" filter="url(#blush-soft)"/>
+            <ellipse cx="27.5" cy="18.5" rx="3.2" ry="2.2" fill="#ff7da8" opacity="0.78" filter="url(#blush-soft)"/>
+            <!-- Anime blush dashes -->
+            <g stroke="#ff4f8b" stroke-width="0.65" stroke-linecap="round" opacity="0.7">
+              <line x1="5.2" y1="17.8" x2="6.0" y2="19.2"/>
+              <line x1="6.5" y1="17.5" x2="7.3" y2="18.9"/>
+              <line x1="7.8" y1="17.8" x2="8.6" y2="19.2"/>
+              <line x1="25.4" y1="17.8" x2="26.2" y2="19.2"/>
+              <line x1="26.7" y1="17.5" x2="27.5" y2="18.9"/>
+              <line x1="28.0" y1="17.8" x2="28.8" y2="19.2"/>
+            </g>
+          </g>
+
+          <!-- Floating cheek micro-hearts -->
+          <path class="cheek-heart-l" d="M 5.5 16.5 C 5.0 15.5, 3.8 15.8, 4.3 17.0 C 4.8 18.0, 5.5 18.7, 5.5 18.7 C 5.5 18.7, 6.2 18.0, 6.7 17.0 C 7.2 15.8, 6.0 15.5, 5.5 16.5 Z" fill="#ff7da8"/>
+          <path class="cheek-heart-r" d="M 28.5 16.5 C 28.0 15.5, 26.8 15.8, 27.3 17.0 C 27.8 18.0, 28.5 18.7, 28.5 18.7 C 28.5 18.7, 29.2 18.0, 29.7 17.0 C 30.2 15.8, 29.0 15.5, 28.5 16.5 Z" fill="#ff7da8"/>
 
           <!-- Eyes Group -->
           <g id="eyes-js">
             <!-- Left Eye (Idle) -->
             <g class="eye-l-blink">
               <g id="eye-left">
+                <!-- Eyelash accent -->
+                <path d="M 8.2 13.0 Q 8.4 11.6 9.3 12.0" fill="none" stroke="#28223a" stroke-width="0.8" stroke-linecap="round"/>
                 <rect id="pupil-left" class="pupil-left" x="8.8" y="12.5" width="5.2" height="6.2" rx="2.6" ry="3.1" fill="url(#pupil-gloss-l)"/>
-                <circle cx="12.4" cy="17.0" r="0.55" fill="#ffffff" opacity="0.9" pointer-events="none"/>
+                <!-- Eye Specular Highlights -->
+                <circle cx="10.2" cy="14.2" r="1.2" fill="#ffffff" pointer-events="none"/>
+                <circle cx="12.4" cy="17.0" r="0.6" fill="#ffffff" opacity="0.95" pointer-events="none"/>
                 <!-- Star twinkle shine in left eye -->
                 <path class="eye-twinkle" d="M 13.8 13.3 Q 14.1 14.3 14.8 14.3 Q 14.1 14.3 13.8 15.3 Q 13.8 14.3 12.8 14.3 Q 13.8 14.3 13.8 13.3 Z" fill="#ffffff" pointer-events="none" />
               </g>
@@ -524,8 +696,12 @@
             <!-- Right Eye (Idle) -->
             <g class="eye-r-blink">
               <g id="eye-right">
+                <!-- Eyelash accent -->
+                <path d="M 25.8 13.0 Q 25.6 11.6 24.7 12.0" fill="none" stroke="#28223a" stroke-width="0.8" stroke-linecap="round"/>
                 <rect id="pupil-right" class="pupil-right" x="19.8" y="12.5" width="5.2" height="6.2" rx="2.6" ry="3.1" fill="url(#pupil-gloss-r)"/>
-                <circle cx="23.4" cy="17.0" r="0.55" fill="#ffffff" opacity="0.9" pointer-events="none"/>
+                <!-- Eye Specular Highlights -->
+                <circle cx="21.2" cy="14.2" r="1.2" fill="#ffffff" pointer-events="none"/>
+                <circle cx="23.4" cy="17.0" r="0.6" fill="#ffffff" opacity="0.95" pointer-events="none"/>
                 <!-- Star twinkle shine in right eye -->
                 <path class="eye-twinkle-r" d="M 24.8 13.3 Q 25.1 14.3 25.8 14.3 Q 25.1 14.3 24.8 15.3 Q 24.8 14.3 23.8 14.3 Q 24.8 14.3 24.8 13.3 Z" fill="#ffffff" pointer-events="none" />
               </g>
@@ -561,12 +737,23 @@
               <path d="M 8.5 15.0 Q 11.4 17.5 14.3 15.0" fill="none" stroke="#111119" stroke-width="1.8" stroke-linecap="round"/>
               <path d="M 19.5 15.0 Q 22.4 17.5 25.3 15.0" fill="none" stroke="#111119" stroke-width="1.8" stroke-linecap="round"/>
             </g>
+
+            <!-- Heart Eyes for expr-love -->
+            <g class="expr-love-eyes">
+              <path class="heart-pulse-l" d="M 11.4 14.2 C 10.2 12.4, 7.8 13.2, 8.8 15.5 C 9.6 17.3, 11.4 18.7, 11.4 18.7 C 11.4 18.7, 13.2 17.3, 14.0 15.5 C 15.0 13.2, 12.6 12.4, 11.4 14.2 Z" fill="#ff4d79"/>
+              <circle cx="10.4" cy="14.6" r="0.6" fill="#ffffff"/>
+              <path class="heart-pulse-r" d="M 22.4 14.2 C 21.2 12.4, 18.8 13.2, 19.8 15.5 C 20.6 17.3, 22.4 18.7, 22.4 18.7 C 22.4 18.7, 24.2 17.3, 25.0 15.5 C 26.0 13.2, 23.6 12.4, 22.4 14.2 Z" fill="#ff4d79"/>
+              <circle cx="21.4" cy="14.6" r="0.6" fill="#ffffff"/>
+            </g>
           </g>
 
-          <!-- Mouth: Iconic surprised/singing round "o" with soft breathing pulse -->
+          <!-- Mouth: Cute humming round "o" with tooth & tongue -->
           <g class="idle-mouth">
             <ellipse cx="17.0" cy="19.8" rx="2.0" ry="2.6" fill="#111119"/>
-            <ellipse cx="17.0" cy="20.9" rx="1.4" ry="1.2" fill="#ff648f" opacity="0.92"/>
+            <!-- Tiny white tooth highlight -->
+            <path d="M 16.3 18.5 Q 17.0 19.1 17.7 18.5 Z" fill="#ffffff" opacity="0.95"/>
+            <!-- Cute pink tongue -->
+            <ellipse cx="17.0" cy="21.0" rx="1.4" ry="1.2" fill="#ff648f" opacity="0.95"/>
           </g>
 
           <!-- Joyful open smile when purring/happy -->
