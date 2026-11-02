@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mochi AI — Adorable Desktop AI Productivity Companion (Live Demo)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫧</text></svg>">
+  <style>
+    :root {
+      --bg-dark: #0f111a;
+      --bg-card: rgba(22, 25, 38, 0.82);
+      --border-card: rgba(255, 255, 255, 0.12);
+      --text-main: #f0f4fc;
+      --text-muted: rgba(240, 244, 252, 0.65);
+      --accent-mochi: #8ce5ff;
+      --accent-mochi-grad: linear-gradient(135deg, #74b9ff, #a29bfe);
+      --urgent: #ff5252;
+      --high: #ff9f43;
+      --medium: #feca57;
+      --low: #1dd1a1;
+      --stretch-sx: 1;
+      --stretch-sy: 1;
+      --drag-tilt: 0deg;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 30%, #1e2438 0%, #0c0e17 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Desktop Grid Background */
+    .desktop-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top Demo Header Bar */
+    .top-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(15, 17, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 50;
+    }
+    .banner-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.3px;
+    }
+    .banner-badge {
+      font-size: 11px;
+      background: rgba(116, 185, 255, 0.2);
+      color: #74b9ff;
+      border: 1px solid rgba(116, 185, 255, 0.35);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 600;
+    }
+    .banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-github {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-github:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Interactive Desktop Playground */
+    #desktop-stage {
+      position: absolute;
+      inset: 48px 0 0 0;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* Companion Container */
+    #companion-container {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      width: 220px;
+      height: 220px;
+      cursor: grab;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.2s ease;
+    }
+    #companion-container:active {
+      cursor: grabbing;
+    }
+
+    #companion-svg-object {
+      width: 170px;
+      height: 170px;
+      pointer-events: none;
+      transform-origin: 50% 8%;
+      transform: scale(var(--stretch-sx), var(--stretch-sy)) rotate(var(--drag-tilt));
+      transition: transform 0.05s ease-out;
+      filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.45));
+    }
+
+    .companion-name-pill {
+      margin-top: 8px;
+      background: rgba(15, 17, 26, 0.85);
+      border: 1px solid var(--border-card);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    /* Dragging and release animations */
+    .dragging-mochi #companion-svg-object {
+      filter: drop-shadow(0 24px 22px rgba(107, 70, 184, 0.55));
+    }
+    .drag-released-mochi #companion-svg-object {
+      animation: jelly-bounce 0.5s cubic-bezier(0.25, 1.4, 0.5, 1) forwards;
+    }
+
+    @keyframes jelly-bounce {
+      0% { transform: scale(var(--stretch-sx), var(--stretch-sy)) rotate(var(--drag-tilt)); }
+      35% { transform: scale(1.24, 0.78) translateY(8px); }
+      65% { transform: scale(0.92, 1.08) translateY(-4px); }
+      85% { transform: scale(1.03, 0.98) translateY(2px); }
+      100% { transform: scale(1, 1) rotate(0deg) translateY(0); }
+    }
+
+    /* Floating Control HUD */
+    #floating-hud {
+      position: absolute;
+      top: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      z-index: 30;
+      width: 90%;
+      max-width: 520px;
+    }
+
+    /* Companion Switcher */
+    .companion-picker {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(20, 24, 38, 0.85);
+      border: 1.5px solid var(--border-card);
+      border-radius: 999px;
+      padding: 4px 6px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .companion-choice-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .companion-choice-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .companion-choice-btn.is-active {
+      background: var(--accent-mochi-grad);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(116, 185, 255, 0.45);
+    }
+
+    /* Floating Search HUD */
+    .search-shell {
+      width: 100%;
+      background: rgba(18, 20, 30, 0.92);
+      border: 1.5px solid var(--border-card);
+      border-radius: 20px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(14px);
+    }
+    .search-shell input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 4px;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    .search-shell input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    .icon-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .icon-btn.is-listening {
+      color: #ff5252;
+      animation: pulse-mic 1s infinite alternate;
+    }
+    @keyframes pulse-mic {
+      from { transform: scale(1); filter: drop-shadow(0 0 2px #ff5252); }
+      to { transform: scale(1.15); filter: drop-shadow(0 0 8px #ff5252); }
+    }
+
+    /* Quick Action Chips */
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+    .chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Chat / Response Panel */
+    #response-card {
+      width: 100%;
+      background: rgba(14, 16, 24, 0.95);
+      border: 1.5px solid var(--border-card);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      max-height: 380px;
+      overflow-y: auto;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    #response-card.is-visible {
+      display: flex;
+      animation: slide-up 0.25s ease-out;
+    }
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .response-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-mochi);
+    }
+    .response-body {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-main);
+      user-select: text;
+      -webkit-user-select: text;
+      white-space: pre-wrap;
+    }
+
+    /* To-Do List Panel */
+    #todo-panel {
+      width: 100%;
+      background: rgba(20, 24, 38, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .todo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .todo-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #a29bfe;
+    }
+    .todo-filters {
+      display: flex;
+      gap: 4px;
+    }
+    .todo-filter-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .todo-filter-btn.is-active {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      transition: all 0.15s ease;
+    }
+    .todo-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .todo-item.is-done {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+    .todo-item input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: #74b9ff;
+    }
+    .todo-text {
+      flex: 1;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    .priority-pill {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .priority-urgent { background: rgba(255, 82, 82, 0.2); color: var(--urgent); border: 1px solid var(--urgent); }
+    .priority-high { background: rgba(255, 159, 67, 0.2); color: var(--high); border: 1px solid var(--high); }
+    .priority-medium { background: rgba(254, 202, 87, 0.2); color: var(--medium); border: 1px solid var(--medium); }
+    .priority-low { background: rgba(29, 209, 161, 0.2); color: var(--low); border: 1px solid var(--low); }
+
+    /* Bottom Info & Audio Controls */
+    .bottom-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 17, 26, 0.85);
+      border: 1px solid var(--border-card);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(12px);
+      z-index: 40;
+    }
+    .audio-select {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 6px;
+      cursor: pointer;
+      outline: none;
+    }
+    .audio-select option {
+      background: #141724;
+      color: #ffffff;
+    }
+
+    /* Drag hint bubble */
+    .drag-hint {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: float-hint 2s infinite ease-in-out;
+    }
+    @keyframes float-hint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop-grid"></div>
+
+  <!-- Top Banner -->
+  <header class="top-banner">
+    <div class="banner-brand">
+      <span>🫧 Mochi AI</span>
+      <span class="banner-badge">Hackathon Interactive Live Demo</span>
+    </div>
+    <div class="banner-actions">
+      <a href="https://github.com/ved3010/Mochi-ai-" target="_blank" class="btn-github">
+        <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub Repository
+      </a>
+    </div>
+  </header>
+
+  <!-- Interactive Desktop Stage -->
+  <main id="desktop-stage">
+    <!-- Floating HUD -->
+    <div id="floating-hud">
+      <!-- Companion Switcher -->
+      <div class="companion-picker" title="Switch Companion Character">
+        <button type="button" id="btn-switch-mochi" class="companion-choice-btn is-active">🫧 Mochi (Cute Blob)</button>
+        <button type="button" id="btn-switch-cat" class="companion-choice-btn">🐱 Cat (Kittu)</button>
+      </div>
+
+      <!-- Search Input Shell -->
+      <form id="chat-form" class="search-shell">
+        <input id="chat-input" type="text" placeholder="Ask Mochi anything… (or try 'plan my day')" autocomplete="off">
+        <button type="button" id="btn-mic" class="icon-btn" title="Voice Input">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="6" y="2" width="4" height="7" rx="2"/>
+            <path d="M4 6v3a4 4 0 0 0 8 0V6" stroke="currentColor" stroke-width="1.2" fill="none"/>
+            <rect x="7" y="11" width="2" height="2"/>
+            <rect x="5" y="13" width="6" height="1.5"/>
+          </svg>
+        </button>
+        <button type="submit" id="btn-send" class="icon-btn" title="Send Question">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 3l5 5h-3v5H6V8H3l5-5z"/>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Quick Action Chips -->
+      <div class="quick-chips">
+        <button type="button" class="chip" data-prompt="plan my day">🎯 Plan My Day</button>
+        <button type="button" class="chip" data-prompt="tasks">📋 My Tasks</button>
+        <button type="button" class="chip" data-prompt="classroom assignments">📚 Classroom Deadlines</button>
+        <button type="button" class="chip" data-prompt="find hackathons">🏆 Unstop Hackathons</button>
+        <button type="button" class="chip" data-prompt="who are you">🫧 Who Are You?</button>
+      </div>
+
+      <!-- Chat Response Card -->
+      <div id="response-card">
+        <div class="response-header">
+          <span id="response-status">Mochi Productivity Assistant</span>
+          <button type="button" id="btn-close-response" class="icon-btn">×</button>
+        </div>
+        <div id="response-body" class="response-body"></div>
+
+        <!-- Interactive To-Do Panel -->
+        <div id="todo-panel" hidden>
+          <div class="todo-header">
+            <span class="todo-title">Interactive Priority Tasks (<span id="todo-count">3</span> open)</span>
+            <div class="todo-filters">
+              <button type="button" class="todo-filter-btn is-active" data-filter="all">All</button>
+              <button type="button" class="todo-filter-btn" data-filter="urgent">Urgent</button>
+              <button type="button" class="todo-filter-btn" data-filter="high">High</button>
+              <button type="button" class="todo-filter-btn" data-filter="medium">Medium</button>
+              <button type="button" class="todo-filter-btn" data-filter="low">Low</button>
+            </div>
+          </div>
+          <div id="todo-items" class="todo-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Draggable Companion Character -->
+    <div id="companion-container">
+      <div class="drag-hint">👆 Drag me anywhere!</div>
+      <object id="companion-svg-object" type="image/svg+xml" data="svg_mochi/cat-idle-follow-v2.svg" aria-label="companion"></object>
+      <div id="companion-badge" class="companion-name-pill">Mochi</div>
+    </div>
+  </main>
+
+  <!-- Bottom Bar: Audio Soundscape & Info -->
+  <footer class="bottom-bar">
+    <span>🎵 Hover Audio:</span>
+    <select id="audio-selector" class="audio-select">
+      <option value="shimmer">✨ Fairy Shimmer (Default)</option>
+      <option value="bubbles">🫧 Soft Bubbles</option>
+      <option value="musicbox">🎶 Music Box</option>
+      <option value="squeak">🐾 Cute Squeak</option>
+      <option value="silent">🔇 Silent</option>
+    </select>
+    <span>• Click or drag Mochi to hear cute squeaks & purrs!</span>
+  </footer>
+
+  <script>
+    // Audio Suite
+    const sounds = {
+      mochiSqueak: new Audio("assets/sound/mochi-squeak.wav"),
+      mochiAlert: new Audio("assets/sound/mochi-alert.wav"),
+      mochiPurr: new Audio("assets/sound/mochi-purr.wav"),
+      shimmer: new Audio("assets/sound/mochi-hover-shimmer.wav"),
+      bubbles: new Audio("assets/sound/mochi-hover-bubbles.wav"),
+      musicbox: new Audio("assets/sound/mochi-hover-musicbox.wav"),
+      meow: new Audio("assets/sound/meow.m4a"),
+      meowAlert: new Audio("assets/sound/meow-alert.m4a"),
+      purring: new Audio("assets/sound/purring.m4a")
+    };
+
+    sounds.shimmer.loop = true;
+    sounds.bubbles.loop = true;
+    sounds.musicbox.loop = true;
+    sounds.purring.loop = true;
+
+    let currentCompanion = "mochi";
+    let hoverSoundType = "shimmer";
+    let activeAmbient = sounds.shimmer;
+
+    function playSqueakOrMeow() {
+      try {
+        if (currentCompanion === "mochi") {
+          sounds.mochiSqueak.currentTime = 0;
+          sounds.mochiSqueak.volume = 0.45;
+          sounds.mochiSqueak.play().catch(() => {});
+        } else {
+          sounds.meow.currentTime = 0;
+          sounds.meow.volume = 0.45;
+          sounds.meow.play().catch(() => {});
+        }
+      } catch (e) {}
+    }
+
+    function playAlertChime() {
+      try {
+        const audio = currentCompanion === "mochi" ? sounds.mochiAlert : sounds.meowAlert;
+        audio.currentTime = 0;
+        audio.volume = 0.4;
+        audio.play().catch(() => {});
+      } catch (e) {}
+    }
+
+    // Audio Selector
+    const audioSelector = document.getElementById("audio-selector");
+    audioSelector.addEventListener("change", (e) => {
+      hoverSoundType = e.target.value;
+      if (activeAmbient) {
+        activeAmbient.pause();
+        activeAmbient.currentTime = 0;
+      }
+      if (hoverSoundType === "bubbles") activeAmbient = sounds.bubbles;
+      else if (hoverSoundType === "musicbox") activeAmbient = sounds.musicbox;
+      else if (hoverSoundType === "shimmer") activeAmbient = sounds.shimmer;
+      else if (hoverSoundType === "purring") activeAmbient = sounds.purring;
+      else activeAmbient = null;
+    });
+
+    // Companion Drag Physics
+    const companionBox = document.getElementById("companion-container");
+    const svgObj = document.getElementById("companion-svg-object");
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let elemX = 0, elemY = 0;
+    let lastX = 0, lastY = 0;
+
+    companionBox.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = companionBox.getBoundingClientRect();
+      elemX = rect.left + rect.width / 2;
+      elemY = rect.top + rect.height / 2;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      companionBox.classList.remove("drag-released-mochi");
+      companionBox.classList.add("dragging-mochi");
+      playSqueakOrMeow();
+      e.preventDefault();
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      elemX += dx;
+      elemY += dy;
+      companionBox.style.left = `${elemX}px`;
+      companionBox.style.top = `${elemY}px`;
+
+      if (currentCompanion === "mochi") {
+        const speed = Math.hypot(dx, dy);
+        const sy = Math.min(1.42, 1.15 + speed * 0.008).toFixed(3);
+        const sx = (1 / Math.sqrt(sy)).toFixed(3);
+        const tilt = Math.max(-20, Math.min(20, -dx * 1.5)).toFixed(1);
+        svgObj.style.setProperty("--stretch-sy", sy);
+        svgObj.style.setProperty("--stretch-sx", sx);
+        svgObj.style.setProperty("--drag-tilt", `${tilt}deg`);
+      } else {
+        const tilt = Math.max(-16, Math.min(16, -dx * 1.2)).toFixed(1);
+        svgObj.style.setProperty("--drag-tilt", `${tilt}deg`);
+      }
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      companionBox.classList.remove("dragging-mochi");
+      if (currentCompanion === "mochi") {
+        companionBox.classList.add("drag-released-mochi");
+        svgObj.style.setProperty("--stretch-sy", "1");
+        svgObj.style.setProperty("--stretch-sx", "1");
+        svgObj.style.setProperty("--drag-tilt", "0deg");
+        setTimeout(() => companionBox.classList.remove("drag-released-mochi"), 500);
+      } else {
+        svgObj.style.setProperty("--drag-tilt", "0deg");
+      }
+    });
+
+    // Companion Hover Sound
+    companionBox.addEventListener("mouseenter", () => {
+      if (activeAmbient && hoverSoundType !== "silent" && hoverSoundType !== "squeak") {
+        activeAmbient.volume = 0.2;
+        activeAmbient.play().catch(() => {});
+      }
+    });
+    companionBox.addEventListener("mouseleave", () => {
+      if (activeAmbient) {
+        activeAmbient.pause();
+      }
+    });
+
+    // Character Switching
+    const btnMochi = document.getElementById("btn-switch-mochi");
+    const btnCat = document.getElementById("btn-switch-cat");
+    const badge = document.getElementById("companion-badge");
+    const chatInput = document.getElementById("chat-input");
+
+    function setCompanion(type) {
+      currentCompanion = type;
+      const isM = type === "mochi";
+      btnMochi.classList.toggle("is-active", isM);
+      btnCat.classList.toggle("is-active", !isM);
+      badge.textContent = isM ? "Mochi" : "Kittu";
+      chatInput.placeholder = isM ? "Ask Mochi anything… (or try 'plan my day')" : "Ask Kittu anything…";
+
+      const folder = isM ? "svg_mochi" : "svg_cat";
+      const t = Date.now();
+      svgObj.data = `${folder}/cat-idle-follow-v2.svg?t=${t}`;
+      playSqueakOrMeow();
+    }
+
+    btnMochi.addEventListener("click", () => setCompanion("mochi"));
+    btnCat.addEventListener("click", () => setCompanion("cat"));
+
+    // Tasks Management
+    let tasks = [
+      { id: 1, title: "Complete OS Lab Assignment No. 8 (Page Faults)", priority: "urgent", done: false },
+      { id: 2, title: "Prepare pitch deck for Cognition AI Hackathon", priority: "high", done: false },
+      { id: 3, title: "Review CS201 Computer Networks slides", priority: "medium", done: false },
+      { id: 4, title: "Drink water and take a 5-min eye break", priority: "low", done: true }
+    ];
+
+    const NEXT_PRIORITY = { urgent: "high", high: "medium", medium: "low", low: "urgent" };
+    let currentFilter = "all";
+
+    const todoPanel = document.getElementById("todo-panel");
+    const todoItemsEl = document.getElementById("todo-items");
+    const todoCountEl = document.getElementById("todo-count");
+
+    function renderTodos() {
+      const filtered = tasks.filter(t => currentFilter === "all" || t.priority === currentFilter);
+      todoCountEl.textContent = tasks.filter(t => !t.done).length;
+      todoItemsEl.innerHTML = "";
+
+      filtered.forEach(task => {
+        const item = document.createElement("div");
+        item.className = `todo-item ${task.done ? "is-done" : ""}`;
+        item.innerHTML = `
+          <input type="checkbox" ${task.done ? "checked" : ""}>
+          <span class="todo-text">${task.title}</span>
+          <span class="priority-pill priority-${task.priority}" title="Click to cycle priority">${task.priority}</span>
+        `;
+
+        item.querySelector("input").addEventListener("change", (e) => {
+          task.done = e.target.checked;
+          if (task.done) playAlertChime();
+          renderTodos();
+        });
+
+        item.querySelector(".priority-pill").addEventListener("click", () => {
+          task.priority = NEXT_PRIORITY[task.priority];
+          renderTodos();
+        });
+
+        todoItemsEl.appendChild(item);
+      });
+    }
+
+    document.querySelectorAll(".todo-filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".todo-filter-btn").forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        currentFilter = btn.dataset.filter;
+        renderTodos();
+      });
+    });
+
+    renderTodos();
+
+    // Chat Agent Simulation Engine
+    const chatForm = document.getElementById("chat-form");
+    const responseCard = document.getElementById("response-card");
+    const responseStatus = document.getElementById("response-status");
+    const responseBody = document.getElementById("response-body");
+    const btnCloseResponse = document.getElementById("btn-close-response");
+
+    function showResponse(text, status = "Mochi Productivity Assistant", showTasks = false) {
+      responseStatus.textContent = status;
+      responseBody.textContent = text;
+      responseCard.classList.add("is-visible");
+      todoPanel.hidden = !showTasks;
+      if (showTasks) renderTodos();
+    }
+
+    btnCloseResponse.addEventListener("click", () => {
+      responseCard.classList.remove("is-visible");
+    });
+
+    function handleCommand(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return;
+
+      if (q.includes("plan my day") || q.includes("workflow") || q.includes("schedule")) {
+        const plan = 
+`🎯 Unified Daily Pomodoro Plan
+
+1. High-Priority & Urgent Deadlines
+- [ ] Complete OS Lab Assignment No. 8 (Page Faults: FIFO, LRU) — Due Today!
+- [ ] Submit Seva Innovation Challenge registration
+
+2. Systematic Time-Blocked Sprint (Pomodoro)
+- Block 1 (45m): OS Algorithms Implementation & Testing
+- Break (10m): Quick stretch & water refill
+- Block 2 (35m): Computer Networks Chapter 4 Review
+- Break (5m): Eye rest
+- Block 3 (30m): Unstop Cognition AI Hackathon Team Ideation
+
+3. Career & Growth Target
+- 🏆 Cognition- AI Hackathon by SGGSCC, New Delhi (Closes in 45 days)
+
+4. Mochi's Tip & Energy Check 🫧
+You're doing fantastic! Don't forget to take brief breaks between intense focus blocks. Mochi is right here cheering for you!`;
+        showResponse(plan, "Mochi Daily Strategist", true);
+      } 
+      else if (q === "tasks" || q.includes("todo") || q.includes("task list") || q.includes("my tasks")) {
+        showResponse("Here are your current priority tasks. Click any priority badge to adjust urgency, or check them off as you complete them!", "Priority Tasks", true);
+      }
+      else if (q.includes("classroom") || q.includes("assignment") || q.includes("deadline")) {
+        const text = 
+`📚 Google Classroom Sync (8 Pending Assignments)
+
+1. [OVERDUE] Assignment No. 8: Page Faults Simulation (OSL-SY-D)
+2. Slow Learner Assignment (OSL-SY-D)
+3. Assignment No. 9: Course Project (OSL-SY-D)
+4. Vatsalya Activity (IT-D FY 2025-26)
+5. Digital Literacy Activity Report (IT-D)
+
+Say "plan my day" to turn these into a balanced Pomodoro study block!`;
+        showResponse(text, "Google Classroom Sync", true);
+      }
+      else if (q.includes("hackathon") || q.includes("unstop") || q.includes("competition")) {
+        const text = 
+`🏆 Live Unstop Opportunities
+
+Active Hackathons:
+• Cognition- AI Hackathon by SGGSCC, New Delhi (Closes in 45 days)
+• Project Last Mile: Analytics Case Challenge by XLRI (Closes in 15 days)
+• IoT Hackathon by Bannari Amman Institute of Technology (Closing today!)
+
+Coding Challenges:
+• ANAVRAN - The Sustainability Event by Xavier Business School
+• YUGSANGRAM - Strategic Auction Event by XBS`;
+        showResponse(text, "Unstop Live Feed", false);
+      }
+      else if (q.includes("who are you") || q.includes("what is mochi") || q.includes("help")) {
+        const name = currentCompanion === "mochi" ? "Mochi, your adorable desktop blob companion" : "Kittu, your desktop cat companion";
+        const text = 
+`Hi! I'm ${name}! 🫧
+
+I live on your desktop to keep you organized, calm, and productive during long study or coding sessions.
+
+What I can do for you:
+• 🎯 "plan my day" — Synthesize Classroom deadlines, Gmail, and Calendar into Pomodoro study blocks.
+• 📋 "tasks" — Manage your priority To-Do list without cluttering your screen.
+• 📚 "classroom assignments" — Live assignment tracker & due date alerts.
+• 🏆 "find hackathons" — Discover active college hackathons & coding competitions on Unstop.
+• 🛡️ Focus Protection — Automatically detect when you're coding or watching lectures so I never interrupt your flow.`;
+        showResponse(text, "About Mochi AI", false);
+      }
+      else {
+        showResponse(`I heard: "${query}". I'm set up to help you crush your college assignments and stay productive! Try asking for "plan my day" or "tasks" to see my full workflow in action.`, "Mochi Chat", false);
+      }
+    }
+
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = chatInput.value;
+      if (!val) return;
+      handleCommand(val);
+      chatInput.value = "";
+    });
+
+    // Quick Chips
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        handleCommand(chip.dataset.prompt);
+      });
+    });
+
+    // Web Speech Recognition (Mic Button)
+    const btnMic = document.getElementById("btn-mic");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = "en-US";
+
+      btnMic.addEventListener("click", () => {
+        btnMic.classList.toggle("is-listening");
+        try {
+          recognition.start();
+        } catch (e) {
+          recognition.stop();
+        }
+      });
+
+      recognition.onresult = (e) => {
+        const text = e.results[0][0].transcript;
+        chatInput.value = text;
+        btnMic.classList.remove("is-listening");
+        handleCommand(text);
+      };
+
+      recognition.onerror = () => {
+        btnMic.classList.remove("is-listening");
+      };
+
+      recognition.onend = () => {
+        btnMic.classList.remove("is-listening");
+      };
+    } else {
+      btnMic.title = "Voice recognition supported in Chrome/Edge";
+    }
+  </script>
+</body>
+</html>
